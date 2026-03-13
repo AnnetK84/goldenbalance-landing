@@ -125,10 +125,10 @@
 
     <section class="section contact" id="contact">
         <h2>Записаться на курс</h2>
-        <form class="contact-form" id="leadForm" action="https://formsubmit.co/ajax/anna@goldenbalance.ru" method="POST" onsubmit="return handleSubmit(event);">
+        <form class="contact-form" action="https://formsubmit.co/anna@goldenbalance.ru" method="POST">
             <input type="hidden" name="_subject" value="🎯 Новая заявка GOLDEN BALANCE">
             <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://annetk84.github.io/goldenbalance-landing/channel.html">
             
             <input type="text" name="name" placeholder="Ваше имя" required>
             <input type="tel" name="phone" placeholder="Телефон" required>
@@ -141,62 +141,9 @@
                 <option value="Другой">Другой / Не знаю</option>
             </select>
             <textarea name="message" rows="4" placeholder="Ваш вопрос или комментарий"></textarea>
-            <button type="submit" id="submitBtn">Отправить заявку</button>
-            
-            <div id="formStatus" style="margin-top: 20px; padding: 15px; border-radius: 10px; display: none;"></div>
+            <button type="submit">Отправить заявку</button>
         </form>
     </section>
-
-    <script>
-        function handleSubmit(e) {
-            e.preventDefault();
-            
-            const btn = document.getElementById('submitBtn');
-            const status = document.getElementById('formStatus');
-            const form = document.getElementById('leadForm');
-            
-            btn.disabled = true;
-            btn.textContent = 'Отправка...';
-            
-            // Send to FormSubmit (email to Anna)
-            fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success === 'true' || data.success === true) {
-                    // Success - redirect to channel
-                    window.location.href = '/channel.html';
-                } else {
-                    throw new Error('Form error');
-                }
-            })
-            .catch(error => {
-                // Even if email fails, save locally and redirect
-                saveLeadLocally(form);
-                window.location.href = '/channel.html';
-            });
-            
-            return false;
-        }
-        
-        function saveLeadLocally(form) {
-            // Save to localStorage as backup
-            const lead = {
-                date: new Date().toISOString(),
-                name: form.name.value,
-                phone: form.phone.value,
-                email: form.email.value,
-                course: form.course.value,
-                message: form.message.value
-            };
-            
-            let leads = JSON.parse(localStorage.getItem('gb_leads') || '[]');
-            leads.push(lead);
-            localStorage.setItem('gb_leads', JSON.stringify(leads));
-        }
-    </script>
 
     <footer>
         <p>© 2026 Центр GOLDEN BALANCE</p>
