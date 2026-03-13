@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDEN BALANCE — Рейки и квантовая психология</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 3em; margin-bottom: 20px; }
+        .hero p { font-size: 1.3em; max-width: 600px; margin: 0 auto 30px; }
+        .cta-button {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s;
+        }
+        .cta-button:hover { transform: scale(1.05); }
+        
+        .section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+        .section h2 { text-align: center; font-size: 2.5em; margin-bottom: 50px; color: #764ba2; }
+        
+        .courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .course-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+        .course-card:hover { box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .course-card h3 { color: #667eea; margin-bottom: 15px; font-size: 1.5em; }
+        .course-card .price { font-size: 2em; color: #764ba2; font-weight: bold; margin: 20px 0; }
+        
+        .contact {
+            background: #f8f9fa;
+            text-align: center;
+        }
+        .contact-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        .contact-form button {
+            background: #667eea;
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>Что, если работать с энергией — это так же просто, как включить свет?</h1>
+        <p>Вы думаете, Рейки — это про «избранных», у кого «есть дар»? Нет. Это про настройку. В Центре GOLDEN BALANCE мы делаем это доступным.</p>
+        <a href="#courses" class="cta-button">Выбрать курс →</a>
+    </section>
+
+    <section class="section" id="courses">
+        <h2>Где начать — выбирайте своё</h2>
+        <div class="courses">
+            <div class="course-card">
+                <h3>Кундалини Рейки</h3>
+                <p>Пробуждение внутренней энергии</p>
+                <div class="price">15 000 ₽</div>
+                <a href="#contact" class="cta-button">Подробнее</a>
+            </div>
+            <div class="course-card">
+                <h3>Рейки Деньги</h3>
+                <p>Работа с потоком изобилия</p>
+                <div class="price">12 000 ₽</div>
+                <a href="#contact" class="cta-button">Подробнее</a>
+            </div>
+            <div class="course-card">
+                <h3>Рейки Стихий</h3>
+                <p>Путь через 5 стихий: Земля, Вода, Огонь, Воздух, Дух</p>
+                <div class="price">от 8 000 ₽</div>
+                <a href="#contact" class="cta-button">Подробнее</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section contact" id="contact">
+        <h2>Записаться на курс</h2>
+        <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            <input type="tel" name="phone" placeholder="Телефон" required>
+            <input type="email" name="email" placeholder="Email">
+            <textarea name="message" rows="4" placeholder="Какой курс интересует?"></textarea>
+            <button type="submit">Отправить заявку</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2026 Центр GOLDEN BALANCE</p>
+        <p>Квантовая психология и нутрициология</p>
+    </footer>
+</body>
+</html>
