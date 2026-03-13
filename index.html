@@ -57,6 +57,7 @@
             margin: 0 auto;
         }
         .contact-form input,
+        .contact-form select,
         .contact-form textarea {
             width: 100%;
             padding: 15px;
@@ -74,6 +75,13 @@
             font-size: 1.1em;
             cursor: pointer;
         }
+        
+        .community {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-align: center;
+        }
+        .community h2 { color: white !important; }
         
         footer {
             background: #333;
@@ -117,21 +125,17 @@
         </div>
     </section>
 
-    <section class="section community" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; text-align: center;">
-        <h2 style="color: white;">Присоединяйтесь к сообществу</h2>
+    <section class="section community">
+        <h2>Присоединяйтесь к сообществу</h2>
         <p style="font-size: 1.3em; max-width: 600px; margin: 0 auto 30px;">В нашем канале — практики, которые можно делать самостоятельно, истории клиентов и специальные предложения только для подписчиков.</p>
         <a href="https://t.me/golden_balance_center" target="_blank" class="cta-button" style="background: white; color: #764ba2;">Подписаться на канал →</a>
     </section>
 
     <section class="section contact" id="contact">
         <h2>Записаться на курс</h2>
-        <form class="contact-form" action="https://formsubmit.co/anna@goldenbalance.ru" method="POST">
-            <input type="hidden" name="_subject" value="🎯 Новая заявка GOLDEN BALANCE">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://annetk84.github.io/goldenbalance-landing/channel.html">
-            
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="tel" name="phone" placeholder="Телефон" required>
+        <form class="contact-form" onsubmit="event.preventDefault(); window.location.href='https://t.me/golden_balance_center'; return false;">
+            <input type="text" name="name" placeholder="Ваше имя">
+            <input type="tel" name="phone" placeholder="Телефон">
             <input type="email" name="email" placeholder="Email">
             <select name="course" style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 10px; font-size: 1em;">
                 <option value="">Выберите курс</option>
