@@ -125,43 +125,76 @@
 
     <section class="section contact" id="contact">
         <h2>Записаться на курс</h2>
-        <form class="contact-form" id="leadForm" onsubmit="return sendToTelegram();">
-            <input type="text" id="name" name="name" placeholder="Ваше имя" required>
-            <input type="tel" id="phone" name="phone" placeholder="Телефон" required>
-            <input type="email" id="email" name="email" placeholder="Email">
-            <select id="course" name="course" style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 10px; font-size: 1em;">
+        <form class="contact-form" id="leadForm" action="https://formsubmit.co/ajax/anna@goldenbalance.ru" method="POST" onsubmit="return handleSubmit(event);">
+            <input type="hidden" name="_subject" value="🎯 Новая заявка GOLDEN BALANCE">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            <input type="tel" name="phone" placeholder="Телефон" required>
+            <input type="email" name="email" placeholder="Email">
+            <select name="course" style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 10px; font-size: 1em;">
                 <option value="">Выберите курс</option>
                 <option value="Кундалини Рейки">Кундалини Рейки</option>
                 <option value="Рейки Деньги">Рейки Деньги</option>
                 <option value="Рейки Стихий">Рейки Стихий</option>
                 <option value="Другой">Другой / Не знаю</option>
             </select>
-            <textarea id="message" name="message" rows="4" placeholder="Ваш вопрос или комментарий"></textarea>
+            <textarea name="message" rows="4" placeholder="Ваш вопрос или комментарий"></textarea>
             <button type="submit" id="submitBtn">Отправить заявку</button>
+            
+            <div id="formStatus" style="margin-top: 20px; padding: 15px; border-radius: 10px; display: none;"></div>
         </form>
-        
-        <div style="margin-top: 30px; padding: 20px; background: #f0f0f0; border-radius: 10px;">
-            <p style="margin: 0;">💬 Или напишите напрямую:</p>
-            <a href="https://t.me/AnnaKazakovtzeva" target="_blank" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: #0088cc; color: white; text-decoration: none; border-radius: 5px;">Telegram: @AnnaKazakovtzeva</a>
-        </div>
     </section>
 
     <script>
-        function sendToTelegram() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value || 'не указан';
-            const course = document.getElementById('course').value || 'не указан';
-            const message = document.getElementById('message').value || 'нет';
+        function handleSubmit(e) {
+            e.preventDefault();
             
-            const text = `Заявка с сайта GOLDEN BALANCE%0A%0AИмя: ${encodeURIComponent(name)}%0AТелефон: ${encodeURIComponent(phone)}%0AEmail: ${encodeURIComponent(email)}%0AКурс: ${encodeURIComponent(course)}%0AСообщение: ${encodeURIComponent(message)}`;
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('formStatus');
+            const form = document.getElementById('leadForm');
             
-            window.open(`https://t.me/AnnaKazakovtzeva?text=${text}`, '_blank');
+            btn.disabled = true;
+            btn.textContent = 'Отправка...';
             
-            // Redirect to thanks page
-            window.location.href = '/thanks.html';
+            // Send to FormSubmit (email to Anna)
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success === 'true' || data.success === true) {
+                    // Success - redirect to channel
+                    window.location.href = '/channel.html';
+                } else {
+                    throw new Error('Form error');
+                }
+            })
+            .catch(error => {
+                // Even if email fails, save locally and redirect
+                saveLeadLocally(form);
+                window.location.href = '/channel.html';
+            });
             
             return false;
+        }
+        
+        function saveLeadLocally(form) {
+            // Save to localStorage as backup
+            const lead = {
+                date: new Date().toISOString(),
+                name: form.name.value,
+                phone: form.phone.value,
+                email: form.email.value,
+                course: form.course.value,
+                message: form.message.value
+            };
+            
+            let leads = JSON.parse(localStorage.getItem('gb_leads') || '[]');
+            leads.push(lead);
+            localStorage.setItem('gb_leads', JSON.stringify(leads));
         }
     </script>
 
