@@ -88,6 +88,9 @@
         <h1>Что, если работать с энергией — это так же просто, как включить свет?</h1>
         <p>Вы думаете, Рейки — это про «избранных», у кого «есть дар»? Нет. Это про настройку. В Центре GOLDEN BALANCE мы делаем это доступным.</p>
         <a href="#courses" class="cta-button">Выбрать курс →</a>
+        <div style="margin-top: 30px;">
+            <a href="https://t.me/golden_balance_center" target="_blank" style="color: white; text-decoration: underline; font-size: 1.1em;">📢 Подписаться на канал</a>
+        </div>
     </section>
 
     <section class="section" id="courses">
@@ -112,6 +115,12 @@
                 <a href="#contact" class="cta-button">Подробнее</a>
             </div>
         </div>
+    </section>
+
+    <section class="section community" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; text-align: center;">
+        <h2 style="color: white;">Присоединяйтесь к сообществу</h2>
+        <p style="font-size: 1.3em; max-width: 600px; margin: 0 auto 30px;">В нашем канале — практики, которые можно делать самостоятельно, истории клиентов и специальные предложения только для подписчиков.</p>
+        <a href="https://t.me/golden_balance_center" target="_blank" class="cta-button" style="background: white; color: #764ba2;">Подписаться на канал →</a>
     </section>
 
     <section class="section contact" id="contact">
@@ -167,7 +176,7 @@
                     status.style.display = 'block';
                     status.style.background = '#d4edda';
                     status.style.color = '#155724';
-                    status.textContent = '✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.';
+                    status.innerHTML = '✅ Заявка отправлена!<br><br>🎁 <b>Бонус:</b> <a href="https://t.me/golden_balance_center" target="_blank">Подпишитесь на канал</a> — там бесплатные практики и скидки для подписчиков.<br><br>Мы свяжемся с вами в ближайшее время.';
                     document.getElementById('leadForm').reset();
                 } else {
                     throw new Error('Telegram API error');
