@@ -133,7 +133,7 @@
 
     <section class="section contact" id="contact">
         <h2>Записаться на курс</h2>
-        <form class="contact-form" id="leadForm">
+        <form class="contact-form" id="leadForm" onsubmit="return sendLead();">
             <input type="text" id="name" name="name" placeholder="Ваше имя" required>
             <input type="tel" id="phone" name="phone" placeholder="Телефон" required>
             <input type="email" id="email" name="email" placeholder="Email">
@@ -151,47 +151,64 @@
     </section>
 
     <script>
-        document.getElementById('leadForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        function sendLead() {
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('formStatus');
+            
             btn.disabled = true;
             btn.textContent = 'Отправка...';
             status.style.display = 'block';
             status.style.background = '#d1ecf1';
             status.textContent = 'Сохраняем заявку...';
             
-            const data = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                course: document.getElementById('course').value,
-                message: document.getElementById('message').value,
-                date: new Date().toISOString()
-            };
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value || 'не указан';
+            const course = document.getElementById('course').value || 'не указан';
+            const message = document.getElementById('message').value || 'нет';
             
-            try {
-                // Save to localStorage
-                let leads = JSON.parse(localStorage.getItem('gb_leads') || '[]');
-                leads.push(data);
-                localStorage.setItem('gb_leads', JSON.stringify(leads));
-                
-                // Show success and redirect
-                status.style.background = '#d4edda';
-                status.textContent = '✅ Заявка сохранена! Переходим в канал...';
-                
-                setTimeout(() => {
-                    window.location.href = 'https://t.me/golden_balance_center';
-                }, 1500);
-                
-            } catch (error) {
-                status.style.background = '#f8d7da';
-                status.textContent = '❌ Ошибка. Напишите нам в Telegram: @AnnaKazakovtzeva';
-                btn.disabled = false;
-                btn.textContent = 'Отправить заявку';
-            }
-        });
+            // Prepare message for bot
+            const text = `🎯 НОВАЯ ЗАЯВКА С САЙТА%0A%0A👤 Имя: ${encodeURIComponent(name)}%0A📱 Телефон: ${encodeURIComponent(phone)}%0A📧 Email: ${encodeURIComponent(email)}%0A📚 Курс: ${encodeURIComponent(course)}%0A💬 Сообщение: ${encodeURIComponent(message)}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}`;
+            
+            // Send to bot
+            fetch('https://api.telegram.org/bot7999039259:AAFrdybIsahM3bgc0UeI0Dh1LgrdWqHn2Ao/sendMessage?chat_id=471428247&text=' + text + '&parse_mode=HTML')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        status.style.background = '#d4edda';
+                        status.textContent = '✅ Заявка сохранена!';
+                        
+                        // Save to localStorage as backup
+                        const lead = { name, phone, email, course, message, date: new Date().toISOString() };
+                        let leads = JSON.parse(localStorage.getItem('gb_leads') || '[]');
+                        leads.push(lead);
+                        localStorage.setItem('gb_leads', JSON.stringify(leads));
+                        
+                        // Redirect to channel after 1.5 seconds
+                        setTimeout(() => {
+                            window.location.href = 'https://t.me/golden_balance_center';
+                        }, 1500);
+                    } else {
+                        throw new Error('Bot error');
+                    }
+                })
+                .catch(error => {
+                    // Even if bot fails, save locally
+                    const lead = { name, phone, email, course, message, date: new Date().toISOString() };
+                    let leads = JSON.parse(localStorage.getItem('gb_leads') || '[]');
+                    leads.push(lead);
+                    localStorage.setItem('gb_leads', JSON.stringify(leads));
+                    
+                    status.style.background = '#fff3cd';
+                    status.innerHTML = '⚠️ Заявка сохранена локально.<br>Переходим в канал...';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'https://t.me/golden_balance_center';
+                    }, 2000);
+                });
+            
+            return false;
+        }
     </script>
 
     <footer>
