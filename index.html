@@ -116,14 +116,75 @@
 
     <section class="section contact" id="contact">
         <h2>Записаться на курс</h2>
-        <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="tel" name="phone" placeholder="Телефон" required>
-            <input type="email" name="email" placeholder="Email">
-            <textarea name="message" rows="4" placeholder="Какой курс интересует?"></textarea>
-            <button type="submit">Отправить заявку</button>
+        <form class="contact-form" id="leadForm">
+            <input type="text" name="name" id="name" placeholder="Ваше имя" required>
+            <input type="tel" name="phone" id="phone" placeholder="Телефон" required>
+            <input type="email" name="email" id="email" placeholder="Email">
+            <select name="course" id="course" style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 10px; font-size: 1em;">
+                <option value="">Выберите курс</option>
+                <option value="Кундалини Рейки">Кундалини Рейки</option>
+                <option value="Рейки Деньги">Рейки Деньги</option>
+                <option value="Рейки Стихий">Рейки Стихий</option>
+                <option value="Другой">Другой / Не знаю</option>
+            </select>
+            <textarea name="message" id="message" rows="4" placeholder="Ваш вопрос или комментарий"></textarea>
+            <button type="submit" id="submitBtn">Отправить заявку</button>
+            <div id="formStatus" style="margin-top: 20px; padding: 15px; border-radius: 10px; display: none;"></div>
         </form>
     </section>
+
+    <script>
+        document.getElementById('leadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('formStatus');
+            btn.disabled = true;
+            btn.textContent = 'Отправка...';
+            
+            const data = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                course: document.getElementById('course').value,
+                message: document.getElementById('message').value,
+                source: 'goldenbalance-landing'
+            };
+            
+            // Send to Telegram via webhook endpoint
+            fetch('https://api.telegram.org/bot7999039259:AAFrdybIsahM3bgc0UeI0Dh1LgrdWqHn2Ao/sendMessage', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    chat_id: '471428247',
+                    text: `🎯 НОВАЯ ЗАЯВКА GOLDEN BALANCE\n\n👤 Имя: ${data.name}\n📱 Телефон: ${data.phone}\n📧 Email: ${data.email || 'не указан'}\n📚 Курс: ${data.course || 'не указан'}\n💬 Сообщение: ${data.message || 'нет'}\n\n⏰ ${new Date().toLocaleString('ru-RU')}`,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.ok) {
+                    status.style.display = 'block';
+                    status.style.background = '#d4edda';
+                    status.style.color = '#155724';
+                    status.textContent = '✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.';
+                    document.getElementById('leadForm').reset();
+                } else {
+                    throw new Error('Telegram API error');
+                }
+            })
+            .catch(error => {
+                status.style.display = 'block';
+                status.style.background = '#f8d7da';
+                status.style.color = '#721c24';
+                status.textContent = '❌ Ошибка отправки. Пожалуйста, напишите нам напрямую в Telegram: @AnnaKazakovtzeva';
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = 'Отправить заявку';
+            });
+        });
+    </script>
 
     <footer>
         <p>© 2026 Центр GOLDEN BALANCE</p>
